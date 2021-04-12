@@ -20,14 +20,6 @@ class Room:
         for r in room_ids:
             self.connections.append(r)
 
-class Dungeon:
-    def __init__(self) -> None:
-        self.rooms: List[Room] = []
-
-    def create_room(self) -> None:
-        if len(self.rooms) == 0:
-            self.rooms.append(Room(0))
-
 class Item:
     type = 'item'
     def __init__(self, name: str, weight: int) -> None:
@@ -131,7 +123,7 @@ def main():
     }
 
     while True:
-        command = input(": ")
+        command = input(': ')
         if command.lower() in commands['quit commands']:
             break
         elif command.lower() in commands['help commands']:
@@ -145,15 +137,7 @@ def main():
             p.look()
         else:
             print('Unknown command')
-'''\
-    p.wear(source = p.items, item = p.items[1], position = 'body')
-    p.show_inventory()
-    p.show_wearing()
-    print('-'*30)
-    p.strip(destination = p.items, position = 'body')
-    p.show_inventory()
-    p.show_wearing()
-'''
+
 
 if __name__ == '__main__':
     exit(main())
