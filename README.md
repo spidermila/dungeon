@@ -1,4 +1,4 @@
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/spidermila/dungeon/main.svg)](https://pre-commit.ci/latest/github/spidermila/dungeon/main)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/spidermila/dungeon/main.svg)](https://pre-commit.com/)
 
 # Dungeon
 
