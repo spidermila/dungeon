@@ -40,13 +40,11 @@ class Clothes(Item):
         super().__init__(*args, **kwargs)
         self.color = color
         self.wearable = True
-        
-    __metaclass__ = 
 
 def main():
     p = Player()
     p.items.append(Item(name = 'neco', weight = 1))
-    p.items.append(Clothes(name = ))
+    p.items.append(Clothes(name = 'shirt', weight = 1, color = 'red'))
 
 
 if __name__ == '__main__':
