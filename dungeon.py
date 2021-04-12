@@ -49,20 +49,22 @@ class Player:
         self.name: str = ''
         self.items: List[Item] = []
         self.HP: int = 30
-        self.wearable_positions: Dict[str, Union[None, Clothes]] = {
-            'head': None,
-            'body': None,
-            'left arm': None,
-            'right arm': None,
-            'hands': None,
-            'legs': None,
-            'feet': None,
+        self.wearable_positions_occupied: Dict[str, bool] = {
+            'head': False,
+            'body': False,
+            'left arm': False,
+            'right arm': False,
+            'hands': False,
+            'legs': False,
+            'feet': False,
         }
+        self.wearing = {} # type: ignore
 
     def wear(self, source: list, item: Clothes, position: str) -> bool:
-        if position in self.wearable_positions:
-            if self.wearable_positions[position] == None:
-                self.wearable_positions[position] = item
+        if position in self.wearable_positions_occupied:
+            if not self.wearable_positions_occupied[position]:
+                self.wearing[position] = item
+                self.wearable_positions_occupied[position] = True
                 # remove the item from the source
                 source.pop(source.index(item))
                 return True
@@ -71,10 +73,24 @@ class Player:
         else:
             raise ValueError('Wrong position name')
 
+    def strip(self, destination: list, position: str) -> bool:
+        if position in self.wearable_positions_occupied:
+            if self.wearable_positions_occupied[position]:
+                item = self.wearing[position]
+                self.wearing.pop(position)
+                self.wearable_positions_occupied[position] = False
+                # add the stripped item to the destination list
+                destination.append(item)
+                return True
+            else:
+                raise AssertionError('Unable to strip clothes from this position. Position is marked as empty.')
+        else:
+            raise AssertionError('Wrong position name')
+
     def show_wearing(self) -> None:
-        for k in self.wearable_positions.keys():
-            if isinstance(self.wearable_positions[k], Clothes):
-                print(f'{k}: {self.wearable_positions[k].name}')
+        for k in self.wearable_positions_occupied.keys():
+            if self.wearable_positions_occupied[k]: # occupied position
+                print(f'{k}: {self.wearing[k].name}')
             else:
                 print(f'{k}: -')
 
@@ -90,7 +106,10 @@ def main():
     p.wear(source = p.items, item = p.items[1], position = 'body')
     p.show_inventory()
     p.show_wearing()
-
+    print('-'*30)
+    p.strip(destination = p.items, position = 'body')
+    p.show_inventory()
+    p.show_wearing()
 
 
 if __name__ == '__main__':
