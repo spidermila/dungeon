@@ -29,21 +29,24 @@ class Dungeon:
 
 
 class Item:
-    def __init__(self, properties: dict) -> None:
-        self.name = properties['name']
-        self.type = properties['type']
-        self.weight = properties['weight']
+    type = 'item'
+    def __init__(self, name: str, weight: int) -> None:
+        self.name = name
+        self.weight = weight
 
+class Clothes(Item):
+    type = 'clothes'
+    def __init__(self, color: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.color = color
+        self.wearable = True
+        
+    __metaclass__ = 
 
 def main():
     p = Player()
-    p.items.append(
-        Item({
-            'name': 'Hat',
-            'type': 'clothes',
-            'weight': 1,
-        }),
-    )
+    p.items.append(Item(name = 'neco', weight = 1))
+    p.items.append(Clothes(name = ))
 
 
 if __name__ == '__main__':
