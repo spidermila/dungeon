@@ -163,6 +163,9 @@ class Player:
             print('No free positions to equip anything')
         return False
 
+    def unequip_dialog(self) -> None:
+        ...
+
 
 def main():
     world = World()
@@ -180,6 +183,7 @@ def main():
         'inventory commands': ['i', 'inv', 'inventory'],
         'look commands': ['l', 'look'],
         'equip commands': ['equip'],
+        'unequp commands': ['unequip', 'un'],
     }
 
     while True:
@@ -198,6 +202,8 @@ def main():
             p.look()
         elif command in commands['equip commands']:
             p.equip_dialog()
+        elif command in commands['unequip commands']:
+            p.unequip_dialog()
         else:
             print('Unknown command')
 
