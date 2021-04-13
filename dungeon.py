@@ -120,21 +120,39 @@ def main():
         'character commands': ['c', 'char', 'character'],
         'inventory commands': ['i', 'inv', 'inventory'],
         'look commands': ['l', 'look'],
+        'equip commands': ['equip'],
     }
 
     while True:
-        command = input(': ')
-        if command.lower() in commands['quit commands']:
+        command_line = input(': ')
+        command = command_line.lower().split()[0]
+        if command in commands['quit commands']:
             break
-        elif command.lower() in commands['help commands']:
+        elif command in commands['help commands']:
             for c in commands:
                 print(f'{c}: {commands[c]}')
-        elif command.lower() in commands['character commands']:
+        elif command in commands['character commands']:
             p.show_wearing()
-        elif command.lower() in commands['inventory commands']:
+        elif command in commands['inventory commands']:
             p.show_inventory()
-        elif command.lower() in commands['look commands']:
+        elif command in commands['look commands']:
             p.look()
+        elif command in commands['equip commands']:
+            intems_in_reach: List[List[Item, list]] = []
+            for item in p.room.items + p.inventory:
+                if item.wearable:
+                    items_in_reach.append(item)
+            if len(items_in_reach) > 0:
+                print('Which item do you want to equip?')
+                for i, item in enumerate(intems_in_reach):
+                    print(f'{i + 1}: {item.name}')
+                while True:
+                    item_number = input('> ')
+                    if item_number in [str(i + 1) for i in range(len(items_in_reach))]:
+                        item = items_in_reach
+                        break
+                    else:
+                        print('Wrong item number!')
         else:
             print('Unknown command')
 
