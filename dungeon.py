@@ -10,7 +10,7 @@ from world import World
 
 def main():
     world = World()
-    world.rooms.append(Room(id = 1, description = 'A small dark room'))
+    world.rooms.append(Room(id = 1, description = 'A small dark room with no doors or windows. \nYou are trapped.'))
     p = Player(room = world.rooms[0])
     p.inventory.append(Item(name = 'paper', weight = 1, size = 1))
     p.inventory.append(Clothes(name = 'shirt', equippable_positions = ['body'], weight = 10, size = 2, color = 'red'))
@@ -29,24 +29,25 @@ def main():
 
     while True:
         command_line = input(': ')
-        command = command_line.lower().split()[0]
-        if command in commands['quit commands']:
-            break
-        elif command in commands['help commands']:
-            for c in commands:
-                print(f'{c}: {commands[c]}')
-        elif command in commands['character commands']:
-            p.show_wearing()
-        elif command in commands['inventory commands']:
-            p.show_inventory()
-        elif command in commands['look commands']:
-            p.look()
-        elif command in commands['equip commands']:
-            p.equip_dialog()
-        elif command in commands['unequip commands']:
-            p.unequip_dialog()
-        else:
-            print('Unknown command')
+        if len(command_line) > 0:
+            command = command_line.lower().split()[0]
+            if command in commands['quit commands']:
+                break
+            elif command in commands['help commands']:
+                for c in commands:
+                    print(f'{c}: {commands[c]}')
+            elif command in commands['character commands']:
+                p.show_wearing()
+            elif command in commands['inventory commands']:
+                p.show_inventory()
+            elif command in commands['look commands']:
+                p.look()
+            elif command in commands['equip commands']:
+                p.equip_dialog()
+            elif command in commands['unequip commands']:
+                p.unequip_dialog()
+            else:
+                print('Unknown command')
 
 
 if __name__ == '__main__':
