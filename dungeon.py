@@ -1,14 +1,11 @@
 '''\
         Learning Python
 '''
-from typing import Dict
-from typing import List
-from typing import Union
-
 from clothes import Clothes
 from item import Item
 from player import Player
 from room import Room
+from weapon import Weapon
 from world import World
 
 def main():
@@ -16,8 +13,8 @@ def main():
     world.rooms.append(Room(id = 1, description = 'A small dark room'))
     p = Player(room = world.rooms[0])
     p.inventory.append(Item(name = 'paper', weight = 1, size = 1))
-    p.inventory.append(Clothes(name = 'shirt', equippable_positions = ['body', 'legs'], weight = 10, size = 2, color = 'red'))
-    p.inventory.append(Weapon(name = 'dagger', weight = 1, size = 1, damage = 1))
+    p.inventory.append(Clothes(name = 'shirt', equippable_positions = ['body'], weight = 10, size = 2, color = 'red'))
+    p.inventory.append(Weapon(name = 'dagger of your ancestors', weight = 1, size = 1, damage = 1))
     p.room.items.append(Clothes(name = 'simple hat', equippable_positions = ['head'], weight = 1, size = 2, color = 'gray'))
 
     commands = {
@@ -27,7 +24,7 @@ def main():
         'inventory commands': ['i', 'inv', 'inventory'],
         'look commands': ['l', 'look'],
         'equip commands': ['eq', 'equip'],
-        'unequp commands': ['un', 'unequip'],
+        'unequip commands': ['un', 'unequip'],
     }
 
     while True:

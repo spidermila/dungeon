@@ -12,6 +12,7 @@ class Player:
         self.HP: int = 30
         self.inventory_size = 10
         self.max_weight = 100
+        self.separator_width = 40
         self.equippable_positions_occupied: Dict[str, bool] = {
             'head': False,
             'body': False,
@@ -22,6 +23,12 @@ class Player:
             'feet': False,
         }
         self.wearing: dict = {}
+
+    def minor_separator(self) -> None:
+        print('-'*self.separator_width)
+
+    def major_separator(self) -> None:
+        print('='*self.separator_width)
 
     def equip(self, source: list, item: Item, position: str) -> bool:
         if position in self.equippable_positions_occupied:
@@ -58,17 +65,29 @@ class Player:
                 print(f'{k}: -')
 
     def show_inventory(self) -> None:
+        self.major_separator()
+        print(f'Inventory occupation: {self.get_current_inventory_occupation()}/{self.inventory_size}')
+        self.minor_separator()
+        maxlen = 0
         for i in self.inventory:
-            print(i.name)
+            if len(i.name) > maxlen:
+                maxlen = len(i.name)
+        print(f'{"item":<{maxlen}} {"size":>5} {"weight":>6}')
+        for i in self.inventory:
+            print(f'{i.name:<{maxlen}} {i.size :>5} {i.weight :>6}')
+        self.major_separator()
 
     def look(self):
+        self.major_separator()
         print(self.room.description)
+        self.minor_separator()
         if len(self.room.items) > 0:
             print('Items in the room:')
             for i in self.room.items:
                 print(i.name)
         else:
             print('There are no items in the room')
+        self.major_separator()
 
     def get_current_weight(self) -> int:
         w = 0
