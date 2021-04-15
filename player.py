@@ -13,15 +13,16 @@ class Player:
         self.inventory_size = 10
         self.max_weight = 100
         self.separator_width = 40
-        self.equippable_positions_occupied: Dict[str, bool] = {
-            'head': False,
-            'body': False,
-            'left arm': False,
-            'right arm': False,
-            'hands': False,
-            'legs': False,
-            'feet': False,
-        }
+        self.equippable_positions: List[str] = ['head', 'body','left arm','right arm','hands','legs','feet']
+        #self.equippable_positions_occupied: Dict[str, bool] = {
+        #    'head': False,
+        #    'body': False,
+        #    'left arm': False,
+        #    'right arm': False,
+        #    'hands': False,
+        #    'legs': False,
+        #    'feet': False,
+        #}
         self.equipped: dict = {}
 
     def minor_separator(self) -> None:
@@ -31,10 +32,9 @@ class Player:
         print('='*self.separator_width)
 
     def equip(self, source: list, item: Item, position: str) -> bool:
-        if position in self.equippable_positions_occupied:
-            if not self.equippable_positions_occupied[position]:
+        if position in self.equippable_positions:
+            if position not in self.equipped.keys():
                 self.equipped[position] = item
-                self.equippable_positions_occupied[position] = True
                 # remove the item from the source
                 source.pop(source.index(item))
                 return True
@@ -44,11 +44,10 @@ class Player:
             raise ValueError('Wrong position name')
 
     def unequip(self, destination: list, position: str) -> bool:
-        if position in self.equippable_positions_occupied:
-            if self.equippable_positions_occupied[position]:
+        if position in self.equippable_positions:
+            if position in self.equipped.keys():
                 item = self.equipped[position]
                 self.equipped.pop(position)
-                self.equippable_positions_occupied[position] = False
                 # add the unequipped item to the destination list
                 destination.append(item)
                 return True
@@ -58,11 +57,12 @@ class Player:
             raise AssertionError('Wrong position name')
 
     def show_wearing(self) -> None:
-        for k in self.equippable_positions_occupied:
-            if self.equippable_positions_occupied[k]: # occupied position
-                print(f'{k}: {self.equipped[k].name}')
+        print(self.equipped)
+        for position in self.equippable_positions:
+            if position in self.equipped.keys():
+                print(f'{position}: {self.equipped[position].name}')
             else:
-                print(f'{k}: -')
+                print(f'{position}: -')
 
     def show_inventory(self) -> None:
         self.major_separator()
@@ -141,8 +141,8 @@ class Player:
             print('Nothing to equip.')
             return False
         free_positions = [
-            p for p in self.equippable_positions_occupied \
-            if self.equippable_positions_occupied[p] == False
+            p for p in self.equippable_positions \
+            if p not in self.equipped.keys()
         ]
         if len(free_positions) > 0 and item.equippable:
             positions = list(set(item.equippable_positions).intersection(free_positions))

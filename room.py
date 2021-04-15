@@ -3,8 +3,7 @@ from typing import List
 from item import Item
 
 class Room:
-    def __init__(self, id: int, description: str) -> None:
-        self.id = id
+    def __init__(self, description: str) -> None:
         self.items: List[Item] = []
         self.connections: List[int] = []
         self.description = description

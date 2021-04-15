@@ -10,12 +10,13 @@ from world import World
 
 def main():
     world = World()
-    world.rooms.append(Room(id = 1, description = 'A small dark room with no doors or windows. \nYou are trapped.'))
-    p = Player(room = world.rooms[0])
-    p.inventory.append(Item(name = 'paper', weight = 1, size = 1))
-    p.inventory.append(Clothes(name = 'shirt', equippable_positions = ['body'], weight = 10, size = 2, color = 'red'))
-    p.inventory.append(Weapon(name = 'dagger of your ancestors', weight = 1, size = 1, damage = 1))
-    p.room.items.append(Clothes(name = 'simple hat', equippable_positions = ['head'], weight = 1, size = 2, color = 'gray'))
+    world.load_game()
+    p = world.player
+    #world.rooms.append(Room(id = 1, description = 'A small dark room with no doors or windows. \nYou are trapped.'))
+    #p.inventory.append(Item(name = 'paper', weight = 1, size = 1))
+    #p.inventory.append(Clothes(name = 'shirt', equippable_positions = ['body'], weight = 10, size = 2, color = 'red'))
+    #p.inventory.append(Weapon(name = 'dagger of your ancestors', weight = 1, size = 1, damage = 1))
+    #p.room.items.append(Clothes(name = 'simple hat', equippable_positions = ['head'], weight = 1, size = 2, color = 'gray'))
 
     commands = {
         'quit commands': ['q', 'quit', 'exit'],
