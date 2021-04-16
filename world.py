@@ -14,9 +14,9 @@ class World:
 
     def load_game(self, filename = 'default.map') -> None:
         # open the file, load the contents into the self.data dict
-        self.data = {
+        self.data: dict = {
             'name': 'default',
-            'player':{
+            'player': {
                 'location': [1,1],
                 'name': 'test guy',
                 'HP': 30,
@@ -132,7 +132,7 @@ class World:
                 self.player.HP = self.data['player']['HP']
                 self.player.inventory_size = self.data['player']['inventory_size']
                 self.player.max_weight = self.data['player']['max_weight']
-                self.player.equippable_positions: List[str] = ['head', 'body','left arm','right arm','hands','legs','feet']
+                self.player.equippable_positions = ['head', 'body', 'left arm', 'right arm', 'hands', 'legs', 'feet']
                 self.player.equipped = self.data['player']['equipped']
                 for obj in self.data['player']['inventory']:
                     self.store_item_in_list(obj = obj, destination = self.player.inventory)

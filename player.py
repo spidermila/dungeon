@@ -14,15 +14,6 @@ class Player:
         self.max_weight = 100
         self.separator_width = 40
         self.equippable_positions: List[str] = ['head', 'body','left arm','right arm','hands','legs','feet']
-        #self.equippable_positions_occupied: Dict[str, bool] = {
-        #    'head': False,
-        #    'body': False,
-        #    'left arm': False,
-        #    'right arm': False,
-        #    'hands': False,
-        #    'legs': False,
-        #    'feet': False,
-        #}
         self.equipped: dict = {}
 
     def minor_separator(self) -> None:
