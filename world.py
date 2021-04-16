@@ -35,7 +35,7 @@ class World:
             'rooms': [
                 {
                     'location': [1,1],
-                    'doors': [0, 1, 0, 0], # N E S W
+                    'doors': [0, 1, 1, 0], # N E S W
                     'description': 'A small dark room. This is where it starts.',
                     'items': [
                         {

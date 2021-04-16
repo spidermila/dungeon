@@ -81,6 +81,17 @@ class Player:
         self.major_separator()
         print(self.room.description)
         self.major_separator()
+        if 1 in self.room.doors:
+            # N E S W
+            drs_map = {
+                0: 'North',
+                1: 'East',
+                2: 'South',
+                3: 'West',
+            }
+            drs = [drs_map[d] for d in [n for n, v in enumerate(list(map(lambda i: i == 1, self.room.doors))) if v]]
+            print(f'Doors to the: {", ".join(drs)}')
+        self.major_separator()
         if len(self.room.items) > 0:
             maxlen = 0
             for i in self.room.items:
