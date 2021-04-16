@@ -12,8 +12,8 @@ class Player:
         self.HP: int = 30
         self.inventory_size = 10
         self.max_weight = 100
-        self.separator_width = 40
-        self.equippable_positions: List[str] = ['head', 'body','left arm','right arm','hands','legs','feet']
+        self.separator_width = 60
+        self.equippable_positions: List[str] = ['head', 'body', 'left arm', 'right arm', 'hands', 'legs', 'feet']
         self.equipped: dict = {}
 
     def minor_separator(self) -> None:
@@ -48,16 +48,22 @@ class Player:
             raise AssertionError('Wrong position name')
 
     def show_wearing(self) -> None:
-        print(self.equipped)
+        maxlen = 0
+        for p in self.equippable_positions:
+            if len(p) > maxlen:
+                maxlen = len(p)
+        self.major_separator()
+        print(f'{"position":<{maxlen}} {"item":>10}')
         for position in self.equippable_positions:
             if position in self.equipped.keys():
-                print(f'{position}: {self.equipped[position].name}')
+                print(f'{position :<{maxlen}} {self.equipped[position].name :>10}')
             else:
-                print(f'{position}: -')
+                print(f'{position :<{maxlen}} {"-----":>10}')
+        self.major_separator()
 
     def show_inventory(self) -> None:
         self.major_separator()
-        print(f'Inventory occupation: {self.get_current_inventory_occupation()}/{self.inventory_size}')
+        print(f'Inventory: {self.get_current_inventory_occupation()}/{self.inventory_size} Weight: {self.get_current_weight()}/{self.max_weight}')
         self.minor_separator()
         if len(self.inventory) > 0:
             maxlen = 0
@@ -84,7 +90,7 @@ class Player:
             self.minor_separator()
             print(f'{"item":<{maxlen}} {"size":>5} {"weight":>6}')
             for i in self.room.items:
-                print(f'{i.name:<{maxlen}} {i.size :>5} {i.weight :>6}')
+                print(f'{i.name :<{maxlen}} {i.size :>5} {i.weight :>6}')
         else:
             print('There are no items in the room.')
         self.major_separator()
@@ -92,7 +98,7 @@ class Player:
     def get_current_weight(self) -> int:
         w = 0
         for i in self.equipped:
-            w += i.weight
+            w += self.equipped[i].weight
         for i in self.inventory:
             w += i.weight
         return w
@@ -159,7 +165,8 @@ class Player:
                             return False
                         else:
                             print('Wrong position number!')
-
+            else:
+                print('Can not equip this item. No suitable positions found.')
         else:
             print('No free positions to equip anything')
         return False
@@ -199,6 +206,54 @@ class Player:
             else:
                 print('Not enough space in the inventory. Dropping the item to the ground.')
                 return False
+        return False
 
+    def pickup_dialog(self) -> bool:
+        if len(self.room.items) > 0:
+            self.major_separator()
+            print('Which item number do you want to pick up?')
+            print('C/c or 0 for Cancel')
+            self.minor_separator()
+            for i, item in enumerate(self.room.items):
+                print(f'{i + 1}: {item.name}')
+            while True:
+                item_number = input('> ')
+                if item_number in [str(i + 1) for i in range(len(self.room.items))]:
+                    item = self.room.items[int(item_number) - 1]
+                    break
+                elif item_number.lower() in ['c', '0']:
+                    return False
+                else:
+                    print('Wrong item number!')
+            if self.get_current_inventory_occupation() + item.size <= self.inventory_size:
+                self.inventory.append(item)
+                self.room.items.pop(self.room.items.index(item))
+                print(f'Picked up {item.name} from the ground.')
+                return True
+            else:
+                print(f'There is not enough space in your inventory.')
+        return False
 
+    def drop_dialog(self) -> bool:
+        if len(self.inventory) > 0:
+            self.major_separator()
+            print('Which item number do you want to drop?')
+            print('C/c or 0 for Cancel')
+            self.minor_separator()
+            for i, item in enumerate(self.inventory):
+                print(f'{i + 1}: {item.name}')
+            while True:
+                item_number = input('> ')
+                if item_number in [str(i + 1) for i in range(len(self.inventory))]:
+                    item = self.inventory[int(item_number) - 1]
+                    break
+                elif item_number.lower() in ['c', '0']:
+                    return False
+                else:
+                    print('Wrong item number!')
+            self.room.items.append(item)
+            self.inventory.pop(self.inventory.index(item))
+            print(f'Dropped {item.name} to the ground.')
+        else:
+            print('Inventory is empty')
         return False

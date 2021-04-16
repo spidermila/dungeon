@@ -45,7 +45,7 @@ class World:
                             'size': 4,
                             'color': 'gray',
                             'equippable': True,
-                            'equippable_positions': ['torso'],
+                            'equippable_positions': ['body'],
                         },
                         {
                             'type': 'weapon',

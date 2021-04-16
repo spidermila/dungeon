@@ -26,6 +26,8 @@ def main():
         'look commands': ['l', 'look'],
         'equip commands': ['eq', 'equip'],
         'unequip commands': ['un', 'unequip'],
+        'pickup commands': ['pi', 'pickup'],
+        'drop commands': ['dr', 'drop'],
     }
 
     while True:
@@ -47,6 +49,10 @@ def main():
                 p.equip_dialog()
             elif command in commands['unequip commands']:
                 p.unequip_dialog()
+            elif command in commands['pickup commands']:
+                p.pickup_dialog()
+            elif command in commands['drop commands']:
+                p.drop_dialog()
             else:
                 print('Unknown command')
 
