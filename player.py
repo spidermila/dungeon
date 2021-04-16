@@ -81,6 +81,12 @@ class Player:
         self.major_separator()
         print(self.room.description)
         self.major_separator()
+        if 1 in self.room.doors:
+            # N E S W
+            drs = []
+            if self.room.doors[0]: drs
+            print(f'Doors to the: {drs}')
+        self.major_separator()
         if len(self.room.items) > 0:
             maxlen = 0
             for i in self.room.items:
