@@ -87,7 +87,7 @@ class Player:
                 0: 'North',
                 1: 'East',
                 2: 'South',
-                3: 'West'
+                3: 'West',
             }
             drs = [drs_map[d] for d in [n for n, v in enumerate(list(map(lambda i: i == 1, self.room.doors))) if v]]
             print(f'Doors to the: {", ".join(drs)}')
