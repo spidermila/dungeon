@@ -34,8 +34,23 @@ class World:
             },
             'rooms': [
                 {
+                    'id': 1,
                     'location': [1,1],
-                    'doors': [0, 1, 1, 0], # N E S W
+                    'connections': [[1, 2]], # connections to room IDs
+                    'doors': [
+                        {
+                            'direction':'somewhere',
+                            'material':'wooden',
+                            'opened':False,
+                            'locks':[
+                                {
+                                    'material': 'iron',
+                                    'diff': 1,
+                                    'locked': False,
+                                },
+                            ],
+                        },
+                    ],
                     'description': 'A small dark room. This is where it starts.',
                     'items': [
                         {
@@ -60,8 +75,17 @@ class World:
                     'mobs': [],
                 },
                 {
+                    'id': 2,
                     'location': [2,1],
-                    'doors': [0, 0, 0, 1], # N E S W
+                    'connections': [[1, 2]], # connections to room IDs
+                    'doors': [
+                        {
+                            'direction':'dunno',
+                            'material':'wooden',
+                            'opened':False,
+                            'locks':[],
+                        },
+                    ],
                     'description': 'Small room with rocky floor.',
                     'items': [
                         {
@@ -122,8 +146,9 @@ class World:
 
     def initialize_world(self) -> None:
         self.map_name = self.data['name']
+        # initial room creation - doors and connections will be done in the next step
         for room in self.data['rooms']:
-            actual_room = Room(description = room['description'])
+            actual_room = Room(id = room['id'], description = room['description'])
             actual_room.location = room['location']
             if actual_room.location == self.data['player']['location']:
                 # spawn the player
@@ -142,3 +167,15 @@ class World:
                 self.store_item_in_list(obj = obj, destination = actual_room.items)
             #for mob in room['mobs']:
             # TODO add mob spawning
+        # add connections and doors to rooms
+        for room in self.data['rooms']:
+            for ingame_room in self.rooms:
+                if ingame_room.id == room['id']:
+                    for connection in room['connections'].sort():
+                        if connection in ingame_room.get_all_connections_by_ids():
+                            pass
+                        else:
+                            for r in self.rooms:
+                                if [r.id, ingame_room.id].sort() == connection:
+                                    ingame_room.connect_to_room(r)
+                    ingame_room.load_doors(room['doors'])
