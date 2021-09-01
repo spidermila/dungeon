@@ -56,7 +56,7 @@ class Room:
                 opened = 'Open'
             else:
                 opened = 'Closed'
-            print(f'{opened} {door.material} door to the {door.direction}')
+            print(f'{opened} {door.material} door to {door.direction}')
 
 class Connection:
     def __init__(self, n1: Room, n2: Room) -> None:

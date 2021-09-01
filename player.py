@@ -20,7 +20,7 @@ class Player:
         print('-'*self.separator_width)
 
     def major_separator(self, msg = '') -> None:
-        separator_half1 = '=' * int(round(self.separator_width/2) - round(len(msg)/2))
+        separator_half1 = '=' * int(int(self.separator_width/2) - int(len(msg)/2))
         separator_half2 = separator_half1[:len(separator_half1) - int(len(msg)%2)]
         print(separator_half1 + msg + separator_half2)
 
