@@ -19,8 +19,10 @@ class Player:
     def minor_separator(self) -> None:
         print('-'*self.separator_width)
 
-    def major_separator(self) -> None:
-        print('='*self.separator_width)
+    def major_separator(self, msg = '') -> None:
+        separator_half1 = '=' * int(round(self.separator_width/2) - round(len(msg)/2))
+        separator_half2 = separator_half1[:len(separator_half1) - int(len(msg)%2)]
+        print(separator_half1 + msg + separator_half2)
 
     def equip(self, source: list, item: Item, position: str) -> bool:
         if position in self.equippable_positions:
@@ -52,7 +54,7 @@ class Player:
         for p in self.equippable_positions:
             if len(p) > maxlen:
                 maxlen = len(p)
-        self.major_separator()
+        self.major_separator('WEARING')
         print(f'{"position":<{maxlen}} {"item":>10}')
         for position in self.equippable_positions:
             if position in self.equipped.keys():
@@ -62,7 +64,7 @@ class Player:
         self.major_separator()
 
     def show_inventory(self) -> None:
-        self.major_separator()
+        self.major_separator('INVENTORY')
         print(f'Inventory: {self.get_current_inventory_occupation()}/{self.inventory_size} Weight: {self.get_current_weight()}/{self.max_weight}')
         self.minor_separator()
         if len(self.inventory) > 0:
@@ -78,11 +80,11 @@ class Player:
             print('No items in inventory.')
 
     def look(self):
-        self.major_separator()
+        self.major_separator('ROOM')
         print(self.room.description)
-        self.major_separator()
+        self.major_separator('DOORS')
         self.room.print_doors()
-        self.major_separator()
+        self.major_separator('ITEMS')
         if len(self.room.items) > 0:
             maxlen = 0
             for i in self.room.items:
@@ -120,7 +122,7 @@ class Player:
             if item.equippable:
                 items_in_reach.append([item, self.inventory])
         if len(items_in_reach) > 0:
-            self.major_separator()
+            self.major_separator('EQUIP')
             print('Which item number do you want to equip?')
             print('C/c or 0 for Cancel')
             self.minor_separator()
@@ -175,7 +177,7 @@ class Player:
 
     def unequip_dialog(self) -> bool:
         if len(self.equipped) > 0:
-            self.major_separator()
+            self.major_separator('UNEQUIP')
             print('Which item number do you want to unequip?')
             print('C/c or 0 for Cancel')
             self.minor_separator()
@@ -212,7 +214,7 @@ class Player:
 
     def pickup_dialog(self) -> bool:
         if len(self.room.items) > 0:
-            self.major_separator()
+            self.major_separator('PICK UP')
             print('Which item number do you want to pick up?')
             print('C/c or 0 for Cancel')
             self.minor_separator()
@@ -238,7 +240,7 @@ class Player:
 
     def drop_dialog(self) -> bool:
         if len(self.inventory) > 0:
-            self.major_separator()
+            self.major_separator('DROP ITEM')
             print('Which item number do you want to drop?')
             print('C/c or 0 for Cancel')
             self.minor_separator()
