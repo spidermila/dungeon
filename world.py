@@ -161,7 +161,6 @@ class World:
                 self.player.equipped = self.data['player']['equipped']
                 for obj in self.data['player']['inventory']:
                     self.store_item_in_list(obj = obj, destination = self.player.inventory)
-            actual_room.doors = room['doors']
             self.rooms.append(actual_room)
             for obj in room['items']:
                 self.store_item_in_list(obj = obj, destination = actual_room.items)
@@ -171,11 +170,14 @@ class World:
         for room in self.data['rooms']:
             for ingame_room in self.rooms:
                 if ingame_room.id == room['id']:
-                    for connection in room['connections'].sort():
-                        if connection in ingame_room.get_all_connections_by_ids():
-                            pass
-                        else:
-                            for r in self.rooms:
-                                if [r.id, ingame_room.id].sort() == connection:
-                                    ingame_room.connect_to_room(r)
-                    ingame_room.load_doors(room['doors'])
+                    if len(room['connections']) > 0:
+                        for connection in room['connections']:
+                            connection.sort()
+                            if connection in ingame_room.get_all_connections_by_ids():
+                                pass
+                            else:
+                                for r in self.rooms:
+                                    if [r.id, ingame_room.id].sort() == connection:
+                                        ingame_room.connect_to_room(r)
+                    if len(room['doors']) > 0:
+                        ingame_room.load_doors(room['doors'])

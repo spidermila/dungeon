@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import Any
 from typing import List
 
-from door import *
+from door import Door
+from door import Lock
 from item import Item
 
 class Room:
@@ -29,22 +30,25 @@ class Room:
         return conns
 
     def load_doors(self, door_list: List[dict]) -> None:
-        for door in door_list:
-            self.doors.append(Door(self))
-            self.doors[-1].direction = door['direction']
-            self.doors[-1].material = door['material']
-            self.doors[-1].opened = door['opened']
-            for lock in door['locks']:
-                self.doors[-1].locks.append(
-                    Lock(
-                        material=lock['material'],
-                        locked=lock['locked'],
-                        diff=lock['diff'],
-                    ),
-                )
+        if len(door_list) > 0:
+            #breakpoint()
+            for loaded_door in door_list:
+                self.doors.append(Door(self))
+                self.doors[-1].direction = loaded_door.copy()['direction']
+                self.doors[-1].material = loaded_door.copy()['material']
+                self.doors[-1].opened = loaded_door.copy()['opened']
+                if len(loaded_door['locks']) > 0:
+                    for lock in loaded_door['locks']:
+                        self.doors[-1].locks.append(
+                            Lock(
+                                material=lock['material'],
+                                locked=lock['locked'],
+                                diff=lock['diff'],
+                            ),
+                        )
 
-    def add_door(self, direction: str, material: str, opened: bool, locks: List[Lock]) -> None:
-        self.doors.append(Door(room=self))
+    #def add_door(self, direction: str, material: str, opened: bool, locks: List[Lock]) -> None:
+    #    self.doors.append(Door(room=self))
 
     def print_doors(self) -> None:
         for door in self.doors:

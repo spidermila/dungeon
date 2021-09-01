@@ -1,9 +1,8 @@
+from typing import Any
 from typing import List
 
-from room import Room
-
 class Door:
-    def __init__(self, room: Room) -> None:
+    def __init__(self, room: Any) -> None:
         self.room = room
         self.direction: str = ''
         self.material: str = ''
