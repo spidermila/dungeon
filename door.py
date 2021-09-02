@@ -1,8 +1,11 @@
-from typing import Any
 from typing import List
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING: # thank you Anthony! https://www.youtube.com/watch?v=B5cjckVzY4g
+    from room import Room
 
 class Door:
-    def __init__(self, room: Any) -> None:
+    def __init__(self, room: Room) -> None:
         self.room = room
         self.direction: str = ''
         self.material: str = ''
