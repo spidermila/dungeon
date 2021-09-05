@@ -1,6 +1,10 @@
+from __future__ import annotations
+
 from typing import List
+from typing import Optional
 
 from clothes import Clothes
+from connection import Connection
 from item import Item
 from player import Player
 from room import Room
@@ -9,6 +13,7 @@ from weapon import Weapon
 class World:
     def __init__(self, filename: str = 'default.map') -> None:
         self.rooms: List[Room] = []
+        self.connections: List[Connection] = []
         self.load_game(filename = filename)
         self.initialize_world()
 
@@ -36,21 +41,6 @@ class World:
                 {
                     'id': 1,
                     'location': [1,1],
-                    'connections': [[1, 2]], # connections to room IDs
-                    'doors': [
-                        {
-                            'direction':'somewhere',
-                            'material':'wooden',
-                            'opened':False,
-                            'locks':[
-                                {
-                                    'material': 'iron',
-                                    'diff': 1,
-                                    'locked': False,
-                                },
-                            ],
-                        },
-                    ],
                     'description': 'A small dark room. This is where it starts.',
                     'items': [
                         {
@@ -77,15 +67,6 @@ class World:
                 {
                     'id': 2,
                     'location': [2,1],
-                    'connections': [[1, 2]], # connections to room IDs
-                    'doors': [
-                        {
-                            'direction':'dunno',
-                            'material':'wooden',
-                            'opened':False,
-                            'locks':[],
-                        },
-                    ],
                     'description': 'Small room with rocky floor.',
                     'items': [
                         {
@@ -105,6 +86,25 @@ class World:
                         },
                     ],
                     'mobs': [],
+                },
+            ],
+            'connections':
+            [
+                {
+                    'connection': [1, 2],
+                    'doors': [
+                        {
+                            'material':'wooden',
+                            'opened':False,
+                            'locks':[
+                                {
+                                    'material': 'iron',
+                                    'diff': 1,
+                                    'locked': False,
+                                },
+                            ],
+                        },
+                    ],
                 },
             ],
         }
@@ -144,9 +144,15 @@ class World:
                 ),
             )
 
+    def get_room_by_id(self, room_id: int) -> Optional[Room]:
+        for room in self.rooms:
+            if room.id == room_id:
+                return room
+        return None
+
     def initialize_world(self) -> None:
         self.map_name = self.data['name']
-        # initial room creation - doors and connections will be done in the next step
+        # initial room creation
         for room in self.data['rooms']:
             actual_room = Room(id = room['id'], description = room['description'])
             actual_room.location = room['location']
@@ -166,18 +172,9 @@ class World:
                 self.store_item_in_list(obj = obj, destination = actual_room.items)
             #for mob in room['mobs']:
             # TODO add mob spawning
-        # add connections and doors to rooms
-        for room in self.data['rooms']:
-            for ingame_room in self.rooms:
-                if ingame_room.id == room['id']:
-                    if len(room['connections']) > 0:
-                        for connection in room['connections']:
-                            connection.sort()
-                            if connection in ingame_room.get_all_connections_by_ids():
-                                pass
-                            else:
-                                for r in self.rooms:
-                                    if [r.id, ingame_room.id].sort() == connection:
-                                        ingame_room.connect_to_room(r)
-                    if len(room['doors']) > 0:
-                        ingame_room.load_doors(room['doors'])
+        # add connections
+        for connection in self.data['connections']:
+            r1,r2 = connection['connection']
+            self.connections.append(Connection(self))
+            self.connections[-1].load_connection(connection)
+        #breakpoint()

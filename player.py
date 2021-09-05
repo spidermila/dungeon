@@ -113,6 +113,13 @@ class Player:
             o += i.size
         return o
 
+    def move_dialog(self) -> bool:
+        for connection in self.room.connections:
+            for door in connection.doors:
+                pass #TODO continue here
+        return False
+
+
     def equip_dialog(self) -> bool:
         items_in_reach: list = []
         for item in self.room.items:

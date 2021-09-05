@@ -38,6 +38,7 @@ def main():
     commands = {
         'quit commands': ['q', 'quit', 'exit'],
         'help commands': ['h', 'help'],
+        'move commands': ['m', 'mo', 'move'],
         'character commands': ['c', 'char', 'character'],
         'inventory commands': ['i', 'inv', 'inventory'],
         'look commands': ['l', 'look'],
@@ -65,6 +66,9 @@ def main():
                 cls()
                 for c in commands:
                     print(f'{c}: {commands[c]}')
+            elif command in commands['move commands']:
+                cls()
+                if not status: p.move()
             elif command in commands['character commands']:
                 cls()
                 if not status: p.show_wearing()
