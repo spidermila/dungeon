@@ -18,6 +18,7 @@ class Connection:
         self.connected_room_ids = connection_dict['connection']
         for id in self.connected_room_ids:
             self.rooms.append(self.world.get_room_by_id(id))
+            from room import Room
             assert isinstance(self.rooms[-1], Room)
             self.rooms[-1].connections.append(self)
         for door in connection_dict['doors']:

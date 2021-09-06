@@ -68,7 +68,7 @@ def main():
                     print(f'{c}: {commands[c]}')
             elif command in commands['move commands']:
                 cls()
-                if not status: p.move()
+                p.move_dialog()
             elif command in commands['character commands']:
                 cls()
                 if not status: p.show_wearing()

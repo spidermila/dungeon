@@ -1,5 +1,5 @@
-from typing import Dict
 from typing import List
+from typing import Optional
 
 from item import Item
 from room import Room
@@ -114,11 +114,39 @@ class Player:
         return o
 
     def move_dialog(self) -> bool:
+        passable_connections = []
         for connection in self.room.connections:
+            passable = True
             for door in connection.doors:
-                pass #TODO continue here
-        return False
-
+                for lock in door.locks:
+                    if lock.locked:
+                        passable = False
+            if passable:
+                passable_connections.append(connection)
+        if len(passable_connections) > 0:
+            self.major_separator('MOVE TO')
+            print('Where do you want to go?')
+            print('C/c or 0 for Cancel')
+            self.minor_separator()
+            for i, connection in enumerate(passable_connections):
+                connected_room = connection.get_opposite_room(self.room)
+                assert isinstance(connected_room, Room)
+                print(f'{i + 1}: {connected_room.id}')
+            while True:
+                item_number = input('> ')
+                if item_number in [str(i + 1) for i in range(len(passable_connections))]:
+                    goto_room = passable_connections[int(item_number) -1].get_opposite_room(self.room)
+                    break
+                elif item_number.lower() in ['c', '0']:
+                    return False
+                else:
+                    print('Wrong item number!')
+        else:
+            print('Nowhere to go.')
+            return False
+        assert isinstance(goto_room, Room)
+        self.room = goto_room
+        return True
 
     def equip_dialog(self) -> bool:
         items_in_reach: list = []
