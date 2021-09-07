@@ -4,23 +4,13 @@
 from os import system
 from sys import platform
 
-from clothes import Clothes
-from item import Item
-from player import Player
-from room import Room
-from weapon import Weapon
 from world import World
 
 def main():
     world = World()
     world.load_game()
     p = world.player
-    status = True
-    #world.rooms.append(Room(id = 1, description = 'A small dark room with no doors or windows. \nYou are trapped.'))
-    #p.inventory.append(Item(name = 'paper', weight = 1, size = 1))
-    #p.inventory.append(Clothes(name = 'shirt', equippable_positions = ['body'], weight = 10, size = 2, color = 'red'))
-    #p.inventory.append(Weapon(name = 'dagger of your ancestors', weight = 1, size = 1, damage = 1))
-    #p.room.items.append(Clothes(name = 'simple hat', equippable_positions = ['head'], weight = 1, size = 2, color = 'gray'))
+    show_status_on_screen = True
 
     if platform.find('linux') != -1:
         cls_command = 'clear'
@@ -51,7 +41,7 @@ def main():
 
     cls()
     while True:
-        if status:
+        if show_status_on_screen:
             #cls()
             p.look()
             p.show_inventory()
@@ -71,13 +61,13 @@ def main():
                 p.move_dialog()
             elif command in commands['character commands']:
                 cls()
-                if not status: p.show_wearing()
+                if not show_status_on_screen: p.show_wearing()
             elif command in commands['inventory commands']:
                 cls()
-                if not status: p.show_inventory()
+                if not show_status_on_screen: p.show_inventory()
             elif command in commands['look commands']:
                 cls()
-                if not status: p.look()
+                if not show_status_on_screen: p.look()
             elif command in commands['equip commands']:
                 cls()
                 p.equip_dialog()
@@ -92,10 +82,10 @@ def main():
                 p.drop_dialog()
             elif command in commands['toggle status']:
                 cls()
-                if status:
-                    status = False
+                if show_status_on_screen:
+                    show_status_on_screen = False
                 else:
-                    status = True
+                    show_status_on_screen = True
             else:
                 cls()
                 print('')
