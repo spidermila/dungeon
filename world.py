@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import io
+from pathlib import Path
+from typing import Dict
 from typing import List
 from typing import Optional
+
+import yaml
 
 from clothes import Clothes
 from connection import Connection
@@ -11,106 +16,27 @@ from room import Room
 from weapon import Weapon
 
 class World:
-    def __init__(self, filename: str = 'default.map') -> None:
+    def __init__(self) -> None:
         self.rooms: List[Room] = []
         self.connections: List[Connection] = []
-        self.load_game(filename = filename)
+        self.data: Dict = {}
+
+    def load_game(self, filename: str) -> None:
+        if Path(filename).is_file():
+            with open(filename, 'r') as stream:
+                try:
+                    self.data = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    print(exc)
+        else:
+            print(f"File {filename} doesn't exist.")
+            # TODO generate a map or something...
+            exit()
         self.initialize_world()
 
-    def load_game(self, filename = 'default.map') -> None:
-        # open the file, load the contents into the self.data dict
-        self.data: dict = {
-            'name': 'default',
-            'player': {
-                'location': [1,1],
-                'name': 'test guy',
-                'HP': 30,
-                'inventory_size': 15,
-                'max_weight': 100,
-                'inventory': [
-                    {
-                        'type': 'item',
-                        'name': 'paper',
-                        'weight': 1,
-                        'size': 1,
-                    },
-                ],
-                'equipped': {},
-            },
-            'rooms': [
-                {
-                    'id': 1,
-                    'location': [1,1],
-                    'description': 'A small dark room. This is where it starts.',
-                    'items': [
-                        {
-                            'type': 'clothes',
-                            'name': 'vest',
-                            'weight': 3,
-                            'size': 4,
-                            'color': 'gray',
-                            'equippable': True,
-                            'equippable_positions': ['body'],
-                        },
-                        {
-                            'type': 'weapon',
-                            'name': 'dagger',
-                            'weight': 1,
-                            'size': 2,
-                            'damage': 1,
-                            'weapon_type': 'blade',
-                            'twohanded': False,
-                        },
-                    ],
-                    'mobs': [],
-                },
-                {
-                    'id': 2,
-                    'location': [2,1],
-                    'description': 'Small room with rocky floor.',
-                    'items': [
-                        {
-                            'type': 'clothes',
-                            'name': 'boots',
-                            'weight': 3,
-                            'size': 4,
-                            'color': 'brown',
-                            'equippable': True,
-                            'equippable_positions': ['feet'],
-                        },
-                        {
-                            'type': 'item',
-                            'name': 'neco',
-                            'weight': 2,
-                            'size': 1,
-                        },
-                    ],
-                    'mobs': [],
-                },
-            ],
-            'connections':
-            [
-                {
-                    'connection': [1, 2],
-                    'doors': [
-                        {
-                            'material':'wooden',
-                            'opened':False,
-                            'locks':[
-                                {
-                                    'material': 'iron',
-                                    'diff': 1,
-                                    'locked': False,
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        }
-
-    def save_game(self, filename = 'default.map') -> None:
-        pass
+    def save_game(self, filename = 'default_game.yaml') -> None:
+        with io.open(filename, 'w', encoding='utf8') as outfile:
+            yaml.dump(self.data, outfile, default_flow_style=False, allow_unicode=True)
 
     def store_item_in_list(self, obj: dict, destination: List[Item]):
         if obj['type'] == 'clothes':

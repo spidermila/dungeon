@@ -1,0 +1,68 @@
+connections:
+- connection:
+  - 1
+  - 2
+  doors:
+  - locks:
+    - diff: 1
+      locked: false
+      material: iron
+    material: wooden
+    opened: false
+name: default
+player:
+  HP: 30
+  equipped: {}
+  inventory:
+  - name: paper
+    size: 1
+    type: item
+    weight: 1
+  inventory_size: 15
+  location:
+  - 1
+  - 1
+  max_weight: 100
+  name: test guy
+rooms:
+- description: A small dark room. This is where it starts.
+  id: 1
+  items:
+  - color: gray
+    equippable: true
+    equippable_positions:
+    - body
+    name: vest
+    size: 4
+    type: clothes
+    weight: 3
+  - damage: 1
+    name: dagger
+    size: 2
+    twohanded: false
+    type: weapon
+    weapon_type: blade
+    weight: 1
+  location:
+  - 1
+  - 1
+  mobs: []
+- description: Small room with rocky floor.
+  id: 2
+  items:
+  - color: brown
+    equippable: true
+    equippable_positions:
+    - feet
+    name: boots
+    size: 4
+    type: clothes
+    weight: 3
+  - name: neco
+    size: 1
+    type: item
+    weight: 2
+  location:
+  - 2
+  - 1
+  mobs: []

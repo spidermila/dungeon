@@ -8,7 +8,7 @@ from world import World
 
 def main():
     world = World()
-    world.load_game()
+    world.load_game(filename='default_game.yaml')
     p = world.player
     show_status_on_screen = True
 
