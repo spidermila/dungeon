@@ -17,9 +17,9 @@ from weapon import Weapon
 
 class World:
     def __init__(self) -> None:
-        self.rooms: List[Room] = []
-        self.connections: List[Connection] = []
-        self.data: Dict = {}
+        self.rooms: list[Room] = []
+        self.connections: list[Connection] = []
+        self.data: dict = {}
 
     def load_game(self, filename: str) -> None:
         if Path(filename).is_file():
@@ -38,7 +38,7 @@ class World:
         with io.open(filename, 'w', encoding='utf8') as outfile:
             yaml.dump(self.data, outfile, default_flow_style=False, allow_unicode=True)
 
-    def store_item_in_list(self, obj: dict, destination: List[Item]):
+    def store_item_in_list(self, obj: dict, destination: list[Item]):
         if obj['type'] == 'clothes':
             destination.append(
                 Clothes(
@@ -70,7 +70,7 @@ class World:
                 ),
             )
 
-    def get_room_by_id(self, room_id: int) -> Optional[Room]:
+    def get_room_by_id(self, room_id: int) -> Room | None:
         for room in self.rooms:
             if room.id == room_id:
                 return room

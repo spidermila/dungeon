@@ -9,16 +9,16 @@ from item import Item
 class Room:
     '''Door's index and Connection index determine which door belongs to which connection.'''
     def __init__(self, id: int, description: str) -> None:
-        self.connections: List[Connection] = []
+        self.connections: list[Connection] = []
         self.description = description
         #self.doors: List[Door] = []
         self.id = id
-        self.items: List[Item] = []
-        self.location: List[int] = []
+        self.items: list[Item] = []
+        self.location: list[int] = []
 
     def get_all_connections_by_ids(self) -> list:
-        conns: List[Any] = []
-        ids: List[int] = []
+        conns: list[Any] = []
+        ids: list[int] = []
         for c in self.connections:
             for r in c.rooms:
                 assert isinstance(r, Room)

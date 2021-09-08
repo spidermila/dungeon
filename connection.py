@@ -10,8 +10,8 @@ if TYPE_CHECKING: # thank you Anthony! https://www.youtube.com/watch?v=B5cjckVzY
 
 class Connection:
     def __init__(self, world: World) -> None:
-        self.rooms: List[Optional[Room]] = []
-        self.doors: List[Door] = []
+        self.rooms: list[Room | None] = []
+        self.doors: list[Door] = []
         self.world = world
 
     def load_connection(self, connection_dict: dict) -> None:
@@ -33,7 +33,7 @@ class Connection:
                 current_lock.diff = lock['diff']
                 current_lock.locked = lock['locked']
 
-    def get_opposite_room(self, room: Room) -> Optional[Room]:
+    def get_opposite_room(self, room: Room) -> Room | None:
         for r in self.rooms:
             if r != room:
                 return r
@@ -43,7 +43,7 @@ class Door:
     def __init__(self) -> None:
         self.material: str = ''
         self.opened: bool = False
-        self.locks: List[Lock] = []
+        self.locks: list[Lock] = []
 
     def open_door(self) -> bool:
         if self.opened:
