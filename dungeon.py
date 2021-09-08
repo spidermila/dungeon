@@ -1,6 +1,3 @@
-'''\
-        Learning Python
-'''
 from os import system
 from sys import platform
 

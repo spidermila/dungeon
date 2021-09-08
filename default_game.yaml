@@ -9,6 +9,16 @@ connections:
       material: iron
     material: wooden
     opened: false
+- connection:
+  - 2
+  - 3
+  doors:
+  - locks:
+    - diff: 1
+      locked: false
+      material: iron
+    material: wooden
+    opened: false
 name: default
 player:
   HP: 30
@@ -64,5 +74,24 @@ rooms:
     weight: 2
   location:
   - 2
+  - 1
+  mobs: []
+- description: Small room with rocky floor. There's one small window in the ceiling but you can see nothing through it.
+  id: 3
+  items:
+  - color: dark green
+    equippable: true
+    equippable_positions:
+    - head
+    name: hat
+    size: 2
+    type: clothes
+    weight: 1
+  - name: wooden stick
+    size: 2
+    type: item
+    weight: 2
+  location:
+  - 3
   - 1
   mobs: []
