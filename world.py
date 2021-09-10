@@ -6,7 +6,13 @@ from typing import Dict
 from typing import List
 from typing import Optional
 
-import yaml
+try:
+    import yaml
+except(NameError, ModuleNotFoundError):
+    import sys
+    print('PyYAML is needed for this game.')
+    raise ImportError(f'PyYAML is needed for this game.\nInstall it: {sys.executable} -m pip install PyYAML')
+
 
 from clothes import Clothes
 from connection import Connection
