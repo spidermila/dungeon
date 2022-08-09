@@ -1,8 +1,8 @@
 from typing import List
-from typing import Optional
 
 from item import Item
 from room import Room
+
 
 class Player:
     def __init__(self, room: Room) -> None:
@@ -13,15 +13,22 @@ class Player:
         self.inventory_size = 10
         self.max_weight = 100
         self.separator_width = 60
-        self.equippable_positions: List[str] = ['head', 'body', 'left arm', 'right arm', 'hands', 'legs', 'feet']
+        self.equippable_positions: List[str] = [
+            'head', 'body', 'left arm', 'right arm', 'hands', 'legs', 'feet',
+        ]
         self.equipped: dict = {}
 
     def minor_separator(self) -> None:
         print('-'*self.separator_width)
 
-    def major_separator(self, msg = '') -> None:
-        separator_half1 = '=' * int(int(self.separator_width/2) - int(len(msg)/2))
-        separator_half2 = separator_half1[:len(separator_half1) - int(len(msg)%2)]
+    def major_separator(self, msg='') -> None:
+        separator_half1 = '=' * \
+            int(int(self.separator_width/2) - int(len(msg)/2))
+        separator_half2 = separator_half1[
+            :len(
+                separator_half1,
+            ) - int(len(msg) % 2)
+        ]
         print(separator_half1 + msg + separator_half2)
 
     def equip(self, source: list, item: Item, position: str) -> bool:
@@ -45,7 +52,10 @@ class Player:
                 destination.append(item)
                 return True
             else:
-                raise AssertionError('Unable to unequip item from this position. Position is marked as empty.')
+                raise AssertionError(
+                    'Unable to unequip item from this position. ' +
+                    'Position is marked as empty.',
+                )
         else:
             raise AssertionError('Wrong position name')
 
@@ -58,14 +68,21 @@ class Player:
         print(f'{"position":<{maxlen}} {"item":>10}')
         for position in self.equippable_positions:
             if position in self.equipped.keys():
-                print(f'{position :<{maxlen}} {self.equipped[position].name :>10}')
+                print(
+                    f'{position :<{maxlen}} ' +
+                    f'{self.equipped[position].name :>10}',
+                )
             else:
                 print(f'{position :<{maxlen}} {"-----":>10}')
         self.major_separator()
 
     def show_inventory(self) -> None:
         self.major_separator('INVENTORY')
-        print(f'Inventory: {self.get_current_inventory_occupation()}/{self.inventory_size} Weight: {self.get_current_weight()}/{self.max_weight}')
+        print(
+            f'Inventory: {self.get_current_inventory_occupation()}' +
+            f'/{self.inventory_size} Weight: {self.get_current_weight()}' +
+            f'/{self.max_weight}',
+        )
         self.minor_separator()
         if len(self.inventory) > 0:
             maxlen = 0
@@ -134,8 +151,14 @@ class Player:
                 print(f'{i + 1}: {connected_room.id}')
             while True:
                 item_number = input('> ')
-                if item_number in [str(i + 1) for i in range(len(passable_connections))]:
-                    goto_room = passable_connections[int(item_number) -1].get_opposite_room(self.room)
+                if item_number in [
+                    str(i + 1) for i in range(len(passable_connections))
+                ]:
+                    goto_room = passable_connections[
+                        int(
+                            item_number,
+                        ) - 1
+                    ].get_opposite_room(self.room)
                     break
                 elif item_number.lower() in ['c', '0']:
                     return False
@@ -165,7 +188,9 @@ class Player:
                 print(f'{i + 1}: {item_source_pair[0].name}')
             while True:
                 item_number = input('> ')
-                if item_number in [str(i + 1) for i in range(len(items_in_reach))]:
+                if item_number in [
+                    str(i + 1) for i in range(len(items_in_reach))
+                ]:
                     item = items_in_reach[int(item_number) - 1][0]
                     source = items_in_reach[int(item_number) - 1][1]
                     break
@@ -177,15 +202,17 @@ class Player:
             print('Nothing to equip.')
             return False
         free_positions = [
-            p for p in self.equippable_positions \
+            p for p in self.equippable_positions
             if p not in self.equipped.keys()
         ]
         if len(free_positions) > 0 and item.equippable:
-            positions = list(set(item.equippable_positions).intersection(free_positions))
+            positions = list(
+                set(item.equippable_positions).intersection(free_positions),
+            )
             if len(positions) > 0:
                 if len(positions) == 1:
                     print(f'Equipping {item.name} at {positions[0]}')
-                    self.equip(source = source, item = item, position = positions[0])
+                    self.equip(source=source, item=item, position=positions[0])
                     return True
                 else:
                     self.minor_separator()
@@ -196,9 +223,17 @@ class Player:
                         print(f'{i + 1}: {position}')
                     while True:
                         position_number = input('> ')
-                        if position_number in [str(i + 1) for i in range(len(positions))]:
-                            print(f'Equipping {item.name} at {positions[int(position_number) - 1]}')
-                            self.equip(source = source, item = item, position = positions[int(position_number) - 1])
+                        if position_number in [
+                            str(i + 1) for i in range(len(positions))
+                        ]:
+                            print(
+                                f'Equipping {item.name} at ' +
+                                f'{positions[int(position_number) - 1]}',
+                            )
+                            self.equip(
+                                source=source, item=item,
+                                position=positions[int(position_number) - 1],
+                            )
                             return True
                         elif position_number.lower() in ['c', '0']:
                             return False
@@ -220,30 +255,44 @@ class Player:
                 print(f'{i + 1}: {position}: {self.equipped[position].name}')
             while True:
                 item_number = input('> ')
-                if item_number in [str(i + 1) for i in range(len(self.equipped))]:
+                if item_number in [
+                    str(i + 1) for i in range(len(self.equipped))
+                ]:
                     position = list(self.equipped.keys())[int(item_number) - 1]
                     break
                 elif item_number.lower() in ['c', '0']:
                     return False
                 else:
                     print('Wrong item number!')
-            if self.get_current_inventory_occupation() + self.equipped[position].size <= self.inventory_size:
+            if (
+                self.get_current_inventory_occupation()
+                + self.equipped[position].size <= self.inventory_size
+            ):
                 print('1: Store in inventory')
                 print('2: Drop to ground')
                 while True:
                     destination_number = input('> ')
                     if destination_number == '1':
-                        self.unequip(position = position, destination = self.inventory)
+                        self.unequip(
+                            position=position,
+                            destination=self.inventory,
+                        )
                         print('Done')
                         return True
                     elif destination_number == '2':
-                        self.unequip(position = position, destination = self.room.items)
+                        self.unequip(
+                            position=position,
+                            destination=self.room.items,
+                        )
                         print('Done')
                         return True
                     else:
                         print('Wrong destination number!')
             else:
-                print('Not enough space in the inventory. Dropping the item to the ground.')
+                print(
+                    'Not enough space in the inventory. ' +
+                    'Dropping the item to the ground.',
+                )
                 return False
         return False
 
@@ -257,20 +306,25 @@ class Player:
                 print(f'{i + 1}: {item.name}')
             while True:
                 item_number = input('> ')
-                if item_number in [str(i + 1) for i in range(len(self.room.items))]:
+                if item_number in [
+                    str(i + 1) for i in range(len(self.room.items))
+                ]:
                     item = self.room.items[int(item_number) - 1]
                     break
                 elif item_number.lower() in ['c', '0']:
                     return False
                 else:
                     print('Wrong item number!')
-            if self.get_current_inventory_occupation() + item.size <= self.inventory_size:
+            if (
+                self.get_current_inventory_occupation()
+                + item.size <= self.inventory_size
+            ):
                 self.inventory.append(item)
                 self.room.items.pop(self.room.items.index(item))
                 print(f'Picked up {item.name} from the ground.')
                 return True
             else:
-                print(f'There is not enough space in your inventory.')
+                print('There is not enough space in your inventory.')
         return False
 
     def drop_dialog(self) -> bool:
@@ -283,7 +337,9 @@ class Player:
                 print(f'{i + 1}: {item.name}')
             while True:
                 item_number = input('> ')
-                if item_number in [str(i + 1) for i in range(len(self.inventory))]:
+                if item_number in [
+                    str(i + 1) for i in range(len(self.inventory))
+                ]:
                     item = self.inventory[int(item_number) - 1]
                     break
                 elif item_number.lower() in ['c', '0']:
