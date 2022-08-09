@@ -3,6 +3,7 @@ from sys import platform
 
 from world import World
 
+
 def main():
     world = World()
     world.load_game(filename='default_game.yaml')
@@ -17,10 +18,11 @@ def main():
         cls_command = 'clear'
     else:
         print('Unknown OS. cls will not work!')
-        cls_command = False # type: ignore
+        cls_command = False  # type: ignore
 
     def cls() -> None:
-        if cls_command: system(cls_command)
+        if cls_command:
+            system(cls_command)
 
     commands = {
         'quit commands': ['q', 'quit', 'exit'],
@@ -39,7 +41,7 @@ def main():
     cls()
     while True:
         if show_status_on_screen:
-            #cls()
+            # cls()
             p.look()
             p.show_inventory()
             p.show_wearing()
@@ -58,13 +60,16 @@ def main():
                 p.move_dialog()
             elif command in commands['character commands']:
                 cls()
-                if not show_status_on_screen: p.show_wearing()
+                if not show_status_on_screen:
+                    p.show_wearing()
             elif command in commands['inventory commands']:
                 cls()
-                if not show_status_on_screen: p.show_inventory()
+                if not show_status_on_screen:
+                    p.show_inventory()
             elif command in commands['look commands']:
                 cls()
-                if not show_status_on_screen: p.look()
+                if not show_status_on_screen:
+                    p.look()
             elif command in commands['equip commands']:
                 cls()
                 p.equip_dialog()

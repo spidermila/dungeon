@@ -1,17 +1,19 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import List
 
 from connection import Connection
 from item import Item
 
+
 class Room:
-    '''Door's index and Connection index determine which door belongs to which connection.'''
+    '''Door's index and Connection index
+    determine which door belongs to which connection.'''
+
     def __init__(self, id: int, description: str) -> None:
         self.connections: list[Connection] = []
         self.description = description
-        #self.doors: List[Door] = []
+        # self.doors: List[Door] = []
         self.id = id
         self.items: list[Item] = []
         self.location: list[int] = []
@@ -26,7 +28,13 @@ class Room:
             conns.append(ids.sort())
         return conns
 
-    #def add_door(self, direction: str, material: str, opened: bool, locks: List[Lock]) -> None:
+    # def add_door(
+    # self,
+    # direction: str,
+    # material: str,
+    # opened: bool,
+    # locks: List[Lock]
+    # ) -> None:
     #    self.doors.append(Door(room=self))
 
     def print_doors(self) -> None:
@@ -38,4 +46,7 @@ class Room:
                     opened = 'Closed'
                 connected_room = connection.get_opposite_room(self)
                 if isinstance(connected_room, Room):
-                    print(f'{opened} {door.material} door leading to room number {connected_room.id}')
+                    print(
+                        f'{opened} {door.material} ' +
+                        f'door leading to room number {connected_room.id}',
+                    )

@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from typing import List
-from typing import Optional
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING: # thank you Anthony! https://www.youtube.com/watch?v=B5cjckVzY4g
+if TYPE_CHECKING:  # thank you Anthony! https://www.yout.be/watch?v=B5cjckVzY4g
     from room import Room
     from world import World
+
 
 class Connection:
     def __init__(self, world: World) -> None:
@@ -18,7 +17,6 @@ class Connection:
         self.connected_room_ids = connection_dict['connection']
         for id in self.connected_room_ids:
             self.rooms.append(self.world.get_room_by_id(id))
-            from room import Room
             assert isinstance(self.rooms[-1], Room)
             self.rooms[-1].connections.append(self)
         for door in connection_dict['doors']:
@@ -38,6 +36,7 @@ class Connection:
             if r != room:
                 return r
         return room
+
 
 class Door:
     def __init__(self) -> None:
@@ -67,8 +66,9 @@ class Door:
             print('The door is already closed.')
             return False
 
+
 class Lock:
     def __init__(self) -> None:
-        self.diff: int # 1 - 10
+        self.diff: int  # 1 - 10
         self.material: str
         self.locked: bool
