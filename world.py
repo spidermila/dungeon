@@ -30,7 +30,7 @@ class World:
 
     def load_game(self, filename: str) -> None:
         if Path(filename).is_file():
-            with open(filename, 'r') as stream:
+            with open(filename) as stream:
                 try:
                     self.data = yaml.safe_load(stream)
                 except yaml.YAMLError as exc:
@@ -42,7 +42,7 @@ class World:
         self.initialize_world()
 
     def save_game(self, filename='default_game.yaml') -> None:
-        with io.open(filename, 'w', encoding='utf8') as outfile:
+        with open(filename, 'w', encoding='utf8') as outfile:
             yaml.dump(
                 self.data, outfile,
                 default_flow_style=False, allow_unicode=True,
