@@ -69,11 +69,11 @@ class Player:
         for position in self.equippable_positions:
             if position in self.equipped.keys():
                 print(
-                    f'{position :<{maxlen}} ' +
-                    f'{self.equipped[position].name :>10}',
+                    f'{position:<{maxlen}} ' +
+                    f'{self.equipped[position].name:>10}',
                 )
             else:
-                print(f'{position :<{maxlen}} {"-----":>10}')
+                print(f'{position:<{maxlen}} {"-----":>10}')
         self.major_separator()
 
     def show_inventory(self) -> None:
@@ -91,7 +91,7 @@ class Player:
                     maxlen = len(i.name)
             print(f'{"item":<{maxlen}} {"size":>5} {"weight":>6}')
             for i in self.inventory:
-                print(f'{i.name:<{maxlen}} {i.size :>5} {i.weight :>6}')
+                print(f'{i.name:<{maxlen}} {i.size:>5} {i.weight:>6}')
             self.major_separator()
         else:
             print('No items in inventory.')
@@ -111,7 +111,7 @@ class Player:
             self.minor_separator()
             print(f'{"item":<{maxlen}} {"size":>5} {"weight":>6}')
             for i in self.room.items:
-                print(f'{i.name :<{maxlen}} {i.size :>5} {i.weight :>6}')
+                print(f'{i.name:<{maxlen}} {i.size:>5} {i.weight:>6}')
         else:
             print('There are no items in the room.')
         self.major_separator()
